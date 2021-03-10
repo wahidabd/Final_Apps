@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Final Apps</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="pantai">Pantai</string>
+    <string name="gunung">Gunung</string>
+    <string name="all_data">All Data</string>
+    <string name="description">Description:</string>
+</resources>
