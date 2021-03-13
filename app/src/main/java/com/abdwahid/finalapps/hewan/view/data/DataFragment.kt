@@ -3,58 +3,99 @@ package com.abdwahid.finalapps.hewan.view.data
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.appcompat.widget.Toolbar
+import androidx.fragment.app.FragmentManager
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.abdwahid.finalapps.R
+import com.abdwahid.finalapps.databinding.FragmentDataBinding
+import com.abdwahid.finalapps.hewan.adapter.DataListAdapter
+import com.abdwahid.finalapps.hewan.model.DataHewan
+import com.abdwahid.finalapps.hewan.view.home.HomeViewModel
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
+class DataFragment : Fragment(), Toolbar.OnMenuItemClickListener {
 
-/**
- * A simple [Fragment] subclass.
- * Use the [DataFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
-class DataFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+    private lateinit var viewModel: DataViewModel
+    private lateinit var _binding: FragmentDataBinding
+    private val binding get() = _binding
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+        _binding = FragmentDataBinding.inflate(layoutInflater)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        binding.topAppBar.title = "Data"
+
+        binding.topAppBar.setOnMenuItemClickListener(this)
+
+        viewModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory()).get(DataViewModel::class.java)
+        binding.rvData.layoutManager = LinearLayoutManager(context)
+
+        viewModel.getAllData().observe(this, Observer {
+            val adapter = it.data?.let { it1 -> DataListAdapter(it1) }
+            binding.rvData.adapter = adapter
+
+            adapter?.setOnItemCallback(object : DataListAdapter.OnItemClickCallback{
+                override fun onItemClicked(dataHewan: DataHewan) {
+                    Toast.makeText(context, dataHewan.title, Toast.LENGTH_SHORT).show()
+                }
+
+                override fun onEdit(dataHewan: DataHewan) {
+                    val mBundle = Bundle()
+                    val fragment = UpdataDataFragment()
+                    mBundle.putString(UpdataDataFragment.EXTRA_ID, dataHewan.id)
+                    fragment.arguments = mBundle
+
+                    fragmentManager?.beginTransaction()?.apply {
+                        replace(R.id.frame_hewan, fragment, UpdataDataFragment::class.java.simpleName)
+                        addToBackStack(null)
+                        commit()
+                    }
+
+                }
+
+                override fun onDelete(dataHewan: DataHewan) {
+                    viewModel.deleteData(dataHewan.id.toString()).observe(this@DataFragment, Observer {
+                        Toast.makeText(context, "${dataHewan.title} berhasil di hapus", Toast.LENGTH_SHORT).show()
+                        val fragment = DataFragment()
+                        fragmentManager?.beginTransaction()?.apply {
+                            replace(R.id.frame_hewan, fragment, DataFragment::class.java.simpleName)
+                            addToBackStack(null)
+                            commit()
+                        }
+                    })
+                }
+
+            })
+        })
+    }
+
+    private fun addFragment(fm: Fragment, fmManager: FragmentManager?){
+        fmManager?.beginTransaction()?.apply {
+            replace(R.id.frame_hewan, fm, fm::class.java.simpleName)
+            addToBackStack(null)
+            commit()
         }
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_data, container, false)
-    }
-
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment DataFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            DataFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
+    override fun onMenuItemClick(item: MenuItem?): Boolean {
+        return when(item?.itemId){
+            R.id.menu_data_add -> {
+                val fm = InsertDataFragment()
+                val manager = fragmentManager
+                addFragment(fm, manager)
+                true
             }
+
+            else -> false
+        }
     }
 }

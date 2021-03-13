@@ -6,4 +6,15 @@
     <string name="gunung">Gunung</string>
     <string name="all_data">All Data</string>
     <string name="description">Description:</string>
+
+    <string name="error_writing_bitmap">Error Writing Bitmap</string>
+    <string name="data">Data</string>
+    <string name="home">Home</string>
+    <string name="category">Category</string>
+    <string name="name">Name</string>
+    <string name="save">Save</string>
+    <string name="title">Title</string>
+    <string name="description_">Description</string>
+    <string name="gallery">Gallery</string>
+    <string name="camera">Camera</string>
 </resources>

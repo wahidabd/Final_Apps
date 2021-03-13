@@ -1,14 +1,10 @@
 package com.abdwahid.finalapps.hewan.utils
 
 import android.app.Activity
-import android.content.Intent
 import android.graphics.Bitmap
 import android.os.Build
-import android.provider.MediaStore
 import android.util.Log
-import com.udacoding.appskesehatan.R
-import com.udacoding.appskesehatan.data.utils.code.CAMERA_CODE
-import com.udacoding.appskesehatan.data.utils.code.GALLERY_CODE
+import com.abdwahid.finalapps.R
 import java.io.File
 import java.io.FileOutputStream
 import java.io.OutputStream

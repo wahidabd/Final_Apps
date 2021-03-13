@@ -3,19 +3,27 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <item android:title="Home"
+    <item
+        android:id="@+id/menu_home"
+        android:title="@string/home"
         android:icon="@drawable/ic_home"
         android:iconTint="@color/colorPrimary"
         tools:targetApi="o"
         app:showAsAction="ifRoom"/>
 
-    <item android:title="Data"
+    <item
+        android:id="@+id/menu_data"
+        android:title="@string/data"
         android:icon="@drawable/ic_data"
         android:iconTint="@color/colorPrimary"
-        app:showAsAction="ifRoom"/>
+        app:showAsAction="ifRoom"
+        tools:targetApi="o" />
 
-    <item android:title="Category"
+    <item
+        android:id="@+id/menu_category"
+        android:title="@string/category"
         android:icon="@drawable/ic_baseline_category_24"
         android:iconTint="@color/colorPrimary"
-        app:showAsAction="ifRoom"/>
+        app:showAsAction="ifRoom"
+        tools:ignore="UnusedAttribute" />
 </menu>

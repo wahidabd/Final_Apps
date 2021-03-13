@@ -3,10 +3,8 @@ package com.abdwahid.finalapps.hewan.utils
 import android.annotation.SuppressLint
 import android.content.ContentUris
 import android.content.Context
-import android.content.Intent
 import android.content.res.AssetFileDescriptor
 import android.database.Cursor
-import android.database.DatabaseUtils
 import android.database.MatrixCursor
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -19,12 +17,13 @@ import android.os.ParcelFileDescriptor
 import android.provider.DocumentsContract
 import android.provider.DocumentsProvider
 import android.provider.MediaStore
-import android.provider.OpenableColumns
 import android.util.Log
 import android.webkit.MimeTypeMap
-import java.io.*
-import java.text.DecimalFormat
-import kotlin.jvm.Throws
+import androidx.annotation.RequiresApi
+import java.io.File
+import java.io.FileNotFoundException
+import java.io.FileOutputStream
+import java.io.IOException
 
 object FilePath {
     /*
@@ -644,6 +643,7 @@ object FilePath {
 //
 //}
 
+@RequiresApi(Build.VERSION_CODES.KITKAT)
 class LocalStorageProvider : DocumentsProvider() {
 
     @Throws(FileNotFoundException::class)

@@ -1,4 +1,6 @@
 package com.abdwahid.finalapps.hewan.model
 
-class HewanResponse {
-}
+data class DataCategory(
+        val id: String? = null,
+        val category_name: String? = null
+)
